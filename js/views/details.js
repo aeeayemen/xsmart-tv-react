@@ -85,7 +85,8 @@ window.detailsView = {
                     stream_id: params.id,
                     series_id: params.id,
                     name: title,
-                    stream_icon: info.cover || info.stream_icon
+                    stream_icon: info.cover || info.stream_icon || info.movie_image,
+                    cover: info.cover || info.stream_icon || info.movie_image || info.backdrop_path?.[0]
                 };
 
                 if (Storage.isFavorite(params.type, params.id)) {

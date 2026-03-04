@@ -30,8 +30,9 @@ window.playerView = {
         document.getElementById('player-fav-btn').addEventListener('click', () => {
             const stream = {
                 stream_id: params.id,
-                name: params.name || "قناة مباشرة",
-                stream_icon: params.icon || ""
+                name: decodeURIComponent(params.name || "قناة مباشرة"),
+                stream_icon: decodeURIComponent(params.icon || ""),
+                cover: decodeURIComponent(params.icon || "")
             };
             if (Storage.isFavorite(params.type, params.id)) {
                 Storage.removeFavorite(params.type, params.id);

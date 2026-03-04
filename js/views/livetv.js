@@ -112,7 +112,7 @@ window.livetvView = {
                     html += `
                         <div class="grid-item">
                             <img src="${icon}" alt="${name}" loading="lazy" class="poster" style="height: 160px; object-fit: contain; background: #222;"
-                                 onclick="Router.navigate('#/player?type=live&id=${id}')">
+                                 onclick="Router.navigate('#/player?type=live&id=${id}&name=${encodeURIComponent(name)}&icon=${encodeURIComponent(icon)}')">
                             <h4 style="margin-top: 8px; font-size: 0.9rem; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${name}</h4>
                         </div>
                     `;
