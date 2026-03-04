@@ -605,7 +605,9 @@ video {
 .livetv-layout {
     display: flex;
     height: calc(100vh - 80px);
-    /* Subtract navbar height */
+    /* Adjust based on navbar height */
+    margin-top: 80px;
+    /* Push below the fixed navbar */
     overflow: hidden;
     background: #000;
 }
@@ -617,6 +619,23 @@ video {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+}
+
+/* Restore visible scrollbar for sidebar */
+.livetv-sidebar-v2::-webkit-scrollbar,
+.cat-channels-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.livetv-sidebar-v2::-webkit-scrollbar-thumb,
+.cat-channels-list::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+.livetv-sidebar-v2::-webkit-scrollbar-track,
+.cat-channels-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .livetv-main-player {
