@@ -687,6 +687,8 @@ video {
 .cat-channels-list {
     display: none;
     background: #0a0a0a;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .cat-channels-list.open {
