@@ -817,21 +817,47 @@ video {
 
     .details-overlay {
         padding: 20px;
-        align-items: flex-end;
+        align-items: flex-start;
+        display: block;
+        overflow-y: auto;
     }
 
     .details-content {
         max-width: 100%;
+        margin-top: 60px;
+    }
+
+    .details-content>div {
+        flex-direction: column !important;
+    }
+
+    .hide-mobile {
+        display: none !important;
     }
 
     .details-desc {
         font-size: 0.9rem;
         line-height: 1.4;
+        margin-bottom: 20px;
     }
 
     .details-meta {
         flex-wrap: wrap;
         font-size: 0.9rem;
+        margin: 10px 0;
+    }
+
+    .episodes-section {
+        padding: 15px;
+        margin-top: 20px;
+    }
+
+    .episodes-list {
+        grid-template-columns: 1fr;
+    }
+
+    .episode-item {
+        padding: 10px;
     }
 
     .details-actions {
