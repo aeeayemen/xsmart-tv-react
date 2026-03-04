@@ -28,6 +28,7 @@ window.moviesView = {
             <div class="page-layout">
                 <div class="sidebar" id="movies-sidebar">
                     <div class="sidebar-item active" data-cat="all">عرض الكل</div>
+                    <div class="sidebar-item" data-cat="favorites" style="border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; padding-bottom: 15px;">❤️ المفضلة</div>
                 </div>
                 <div class="content-area" id="movies-content">
                     <h2 class="row-title" style="margin-bottom: 20px;">جميع الأفلام</h2>
@@ -83,6 +84,13 @@ window.moviesView = {
             sidebar.querySelector('[data-cat="all"]').classList.add('active');
             this.loadMovies('all');
         });
+
+        // Wire up the "Favorites" button
+        sidebar.querySelector('[data-cat="favorites"]').addEventListener('click', () => {
+            sidebar.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            sidebar.querySelector('[data-cat="favorites"]').classList.add('active');
+            this.loadMovies('favorites');
+        });
     },
 
     loadMovies: async function (categoryId) {
@@ -93,6 +101,8 @@ window.moviesView = {
             let allStreams = [];
             if (categoryId === 'all') {
                 allStreams = await API.getStreams('get_vod_streams', '');
+            } else if (categoryId === 'favorites') {
+                allStreams = Storage.get('favorites_movie') || [];
             } else {
                 allStreams = await API.getStreams('get_vod_streams', categoryId);
             }

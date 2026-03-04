@@ -12,12 +12,35 @@ window.playerView = {
         this.streamId = params.id;
         const streamUrl = API.getStreamUrl(params.type, params.id);
 
+        const isFav = Storage.isFavorite(params.type, params.id);
+        const favIcon = isFav ? '❤️' : '🤍';
+
         container.innerHTML = `
             <div class="player-container fade-in">
-                <div class="player-back" onclick="window.history.back()">← رجوع</div>
+                <div class="player-controls-top">
+                    <div class="player-back" onclick="window.history.back()">← رجوع</div>
+                    <div class="player-fav" id="player-fav-btn" style="color: white; font-size: 1.5rem; cursor: pointer; padding: 10px; background: rgba(0,0,0,0.5); border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; margin-left: 20px;">
+                        ${favIcon}
+                    </div>
+                </div>
                 <video id="video-element" controls autoplay></video>
             </div>
         `;
+
+        document.getElementById('player-fav-btn').addEventListener('click', () => {
+            const stream = {
+                stream_id: params.id,
+                name: params.name || "قناة مباشرة",
+                stream_icon: params.icon || ""
+            };
+            if (Storage.isFavorite(params.type, params.id)) {
+                Storage.removeFavorite(params.type, params.id);
+                document.getElementById('player-fav-btn').innerText = '🤍';
+            } else {
+                Storage.addFavorite(params.type, stream);
+                document.getElementById('player-fav-btn').innerText = '❤️';
+            }
+        });
 
         const video = document.getElementById('video-element');
         this.videoPlayer = video;

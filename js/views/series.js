@@ -28,6 +28,7 @@ window.seriesView = {
             <div class="page-layout">
                 <div class="sidebar" id="series-sidebar">
                     <div class="sidebar-item active" data-cat="all">عرض الكل</div>
+                    <div class="sidebar-item" data-cat="favorites" style="border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; padding-bottom: 15px;">❤️ المفضلة</div>
                 </div>
                 <div class="content-area" id="series-content">
                     <h2 class="row-title" style="margin-bottom: 20px;">جميع المسلسلات</h2>
@@ -78,6 +79,13 @@ window.seriesView = {
             sidebar.querySelector('[data-cat="all"]').classList.add('active');
             this.loadSeries('all');
         });
+
+        // Wire up the "Favorites" button
+        sidebar.querySelector('[data-cat="favorites"]').addEventListener('click', () => {
+            sidebar.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            sidebar.querySelector('[data-cat="favorites"]').classList.add('active');
+            this.loadSeries('favorites');
+        });
     },
 
     loadSeries: async function (categoryId) {
@@ -88,6 +96,8 @@ window.seriesView = {
             let allStreams = [];
             if (categoryId === 'all') {
                 allStreams = await API.getStreams('get_series', '');
+            } else if (categoryId === 'favorites') {
+                allStreams = Storage.get('favorites_series') || [];
             } else {
                 allStreams = await API.getStreams('get_series', categoryId);
             }
