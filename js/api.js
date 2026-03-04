@@ -107,8 +107,28 @@ const API = {
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve({
-                    info: { name: "اسم المسلسل الوهمي", rating: "9.0", release_date: "2022", description: "وصف طويل للمسلسل الوهمي يمكن قراءته في صفحة التفاصيل لتجربة الواجهة.", cover: "https://image.tmdb.org/t/p/w500/1LRLLWGvs5sZdTtuJCp4DPm52f.jpg", backdrop_path: ["https://image.tmdb.org/t/p/original/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg"] },
-                    episodes: { "1": [{ id: "ep1", title: "الحلقة 1", info: { duration: "45m" } }, { id: "ep2", title: "الحلقة 2", info: { duration: "42m" } }] }
+                    info: {
+                        name: "مسلسل تجريبي " + (seriesId - 200),
+                        rating: "9.2",
+                        release_date: "2024",
+                        description: "هذا مسلسل تجريبي يحتوي على مواسم وحلقات متعددة لتجربة واجهة المستخدم والتنقل بين الحلقات والمواسم بسلاسة.",
+                        cover: "https://image.tmdb.org/t/p/w500/1LRLLWGvs5sZdTtuJCp4DPm52f.jpg",
+                        backdrop_path: ["https://image.tmdb.org/t/p/original/mDfJG3LC3Dqb67AZ52x3Z0jU0uB.jpg"]
+                    },
+                    episodes: {
+                        "1": [
+                            { id: "s1e1", title: "بداية الرحلة", info: { duration: "50m" } },
+                            { id: "s1e2", title: "المواجهة الأولى", info: { duration: "48m" } },
+                            { id: "s1e3", title: "الخيانة", info: { duration: "45m" } },
+                            { id: "s1e4", title: "طريق العودة", info: { duration: "52m" } },
+                            { id: "s1e5", title: "النهاية القريبة", info: { duration: "55m" } }
+                        ],
+                        "2": [
+                            { id: "s2e1", title: "فصل جديد", info: { duration: "49m" } },
+                            { id: "s2e2", title: "ظلال الماضي", info: { duration: "47m" } },
+                            { id: "s2e3", title: "العهد القديم", info: { duration: "50m" } }
+                        ]
+                    }
                 });
             }, 300);
         });
