@@ -66,6 +66,7 @@ window.homeView = {
             // Load recently watched from local storage
             const recentSeries = Storage.getHistory('series');
             const recentMovies = Storage.getHistory('movie');
+            const userInfo = Storage.get('user_info');
 
             let html = '';
 
