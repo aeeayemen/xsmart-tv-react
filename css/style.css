@@ -929,7 +929,7 @@ video {
 
     /* Live TV Landscape Refinements */
     .livetv-layout {
-        flex-direction: row-reverse;
+        flex-direction: row;
         height: calc(100vh - 60px);
         margin-top: 60px;
     }
@@ -937,7 +937,8 @@ video {
     .livetv-sidebar-v2 {
         width: 250px;
         height: 100%;
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        border-right: none;
         border-bottom: none;
     }
 
