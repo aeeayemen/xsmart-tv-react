@@ -1157,7 +1157,9 @@ video {
     }
 
     .user-info {
-        display: none;
+        display: block;
+        font-size: 0.65rem;
+        line-height: 1.2;
     }
 
     /* Live TV Refinements */
