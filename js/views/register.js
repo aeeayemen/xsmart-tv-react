@@ -51,7 +51,7 @@ window.registerView = {
         App.showLoader();
         errorEl.style.display = 'none';
 
-        API.register(user, pass)
+        API.register(user, email, pass)
             .then(() => {
                 return API.authenticate(user, pass);
             })

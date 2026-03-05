@@ -9,13 +9,14 @@ if (!isset($data['username']) || !isset($data['password'])) {
 }
 
 $username = trim($data['username']);
+$email = trim($data['email'] ?? '');
 $password = password_hash($data['password'], PASSWORD_DEFAULT);
 // Default 1 month subscription for new users
 $exp_date = time() + (30 * 24 * 60 * 60);
 
 try {
-    $stmt = $pdo->prepare("INSERT INTO users (username, password, exp_date) VALUES (?, ?, ?)");
-    $stmt->execute([$username, $password, $exp_date]);
+    $stmt = $pdo->prepare("INSERT INTO users (username, email, password, exp_date) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$username, $email, $password, $exp_date]);
 
     jsonResponse(['message' => 'تم إنشاء الحساب بنجاح', 'success' => true]);
 } catch (PDOException $e) {

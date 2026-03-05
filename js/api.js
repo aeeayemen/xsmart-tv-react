@@ -30,19 +30,25 @@ const API = {
         }
     },
 
-    register: async function (username, password) {
+    register: async function (username, email, password) {
         try {
             const response = await fetch(`${this.backendUrl}/register.php`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({ username, email, password })
             });
-            const result = await response.json();
-            if (result.success) {
-                return result;
-            } else {
-                throw new Error(result.error || 'فشل إنشاء الحساب');
+
+            if (!response.ok) {
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `خطأ سيرفر: ${response.status}`);
+                }
+                throw new Error(`خطأ غير متوقع من السيرفر: ${response.status}`);
             }
+
+            const result = await response.json();
+            return result;
         } catch (error) {
             console.error('Registration Error:', error);
             throw error;
