@@ -162,21 +162,22 @@ window.homeView = {
             const rows = document.querySelectorAll('.row-posters');
             rows.forEach(row => {
                 // Pause if user is hovering over the row
-                if (row.parentNode.matches(':hover')) return;
+                if (row.matches(':hover') || row.parentNode.matches(':hover')) return;
 
                 const maxScroll = row.scrollWidth - row.clientWidth;
                 if (maxScroll <= 0) return; // No need to scroll
 
-                const currentScroll = Math.abs(row.scrollLeft);
+                // Calculate next position
+                let currentScroll = Math.abs(row.scrollLeft);
 
-                // If reached the end, snap back to start. Otherwise, scroll slightly.
-                if (currentScroll >= maxScroll - 10) {
+                // If we are at the end, scroll back to 0. Otherwise, move right.
+                if (currentScroll >= maxScroll - 5) { // Add small buffer
                     row.scrollTo({ left: 0, behavior: 'smooth' });
                 } else {
-                    // Positive left value scrolls "forward" in RTL
-                    row.scrollBy({ left: 250, behavior: 'smooth' });
+                    // Force the scroll by a fixed pixel amount (e.g., width of one poster + gap)
+                    row.scrollBy({ left: 200, behavior: 'smooth' });
                 }
             });
-        }, 3500); // 3.5 seconds
+        }, 3000); // 3 seconds
     }
 };
