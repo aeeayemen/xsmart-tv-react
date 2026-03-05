@@ -34,8 +34,8 @@ window.detailsView = {
                 stream_id: params.id,
                 series_id: params.id,
                 name: title,
-                cover: info.cover_big || info.movie_image || info.cover,
-                stream_icon: info.stream_icon || info.cover || info.movie_image
+                cover: info.cover_big || info.movie_image || info.cover || (info.backdrop_path && info.backdrop_path[0]),
+                stream_icon: info.stream_icon || info.cover || info.movie_image || (info.backdrop_path && info.backdrop_path[0])
             });
 
             container.innerHTML = `

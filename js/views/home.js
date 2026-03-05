@@ -130,7 +130,8 @@ window.homeView = {
         items.forEach(item => {
             const id = type === 'series' ? item.series_id : item.stream_id;
             const name = item.name || item.title || "بدون عنوان";
-            const icon = item.cover || item.stream_icon || 'https://via.placeholder.com/300x450?text=' + encodeURIComponent(name);
+            // Check cover, stream_icon, movie_image, or fallback to placeholder
+            const icon = item.cover || item.stream_icon || item.movie_image || 'https://via.placeholder.com/300x450?text=' + encodeURIComponent(name);
 
             rowHtml += `
                 <img src="${icon}" alt="${name}" loading="lazy" class="poster" 
@@ -161,23 +162,22 @@ window.homeView = {
         this.scrollInterval = setInterval(() => {
             const rows = document.querySelectorAll('.row-posters');
             rows.forEach(row => {
-                // Pause if user is hovering over the row
+                // Pause if user is hovering over the row or its buttons
                 if (row.matches(':hover') || row.parentNode.matches(':hover')) return;
 
                 const maxScroll = row.scrollWidth - row.clientWidth;
-                if (maxScroll <= 0) return; // No need to scroll
+                if (maxScroll <= 10) return; // No scroll needed if it entirely fits
 
-                // Calculate next position
                 let currentScroll = Math.abs(row.scrollLeft);
 
-                // If we are at the end, scroll back to 0. Otherwise, move right.
-                if (currentScroll >= maxScroll - 5) { // Add small buffer
+                // If near the end, reset to 0
+                if (currentScroll >= maxScroll - 50) { // Larger buffer for fractional pixels
                     row.scrollTo({ left: 0, behavior: 'smooth' });
                 } else {
-                    // Force the scroll by a fixed pixel amount (e.g., width of one poster + gap)
-                    row.scrollBy({ left: 200, behavior: 'smooth' });
+                    // Force the scroll by a fixed pixel amount (approx one poster width + gap)
+                    row.scrollTo({ left: currentScroll + 200, behavior: 'smooth' });
                 }
             });
-        }, 3000); // 3 seconds
+        }, 2500); // 2.5 seconds
     }
 };
