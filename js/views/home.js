@@ -174,8 +174,8 @@ window.homeView = {
                 if (currentScroll >= maxScroll - 50) { // Larger buffer for fractional pixels
                     row.scrollTo({ left: 0, behavior: 'smooth' });
                 } else {
-                    // Force the scroll by a fixed pixel amount (approx one poster width + gap)
-                    row.scrollTo({ left: currentScroll + 200, behavior: 'smooth' });
+                    // In RTL, moving forward means scrolling to the negative left
+                    row.scrollBy({ left: -250, behavior: 'smooth' });
                 }
             });
         }, 2500); // 2.5 seconds
