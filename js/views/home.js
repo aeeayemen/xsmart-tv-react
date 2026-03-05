@@ -159,6 +159,8 @@ window.homeView = {
             clearInterval(this.scrollInterval);
         }
 
+        const lastScrolls = new Map();
+
         this.scrollInterval = setInterval(() => {
             const rows = document.querySelectorAll('.row-posters');
             rows.forEach(row => {
@@ -169,15 +171,22 @@ window.homeView = {
                 if (maxScroll <= 10) return; // No scroll needed if it entirely fits
 
                 let currentScroll = Math.abs(row.scrollLeft);
+                let lastScroll = lastScrolls.get(row) ?? -1;
 
-                // If near the end, reset to 0
-                if (currentScroll >= maxScroll - 50) { // Larger buffer for fractional pixels
+                // Check if we reached the end, OR if we are stuck (tried to scroll but position didn't change)
+                if (currentScroll >= maxScroll - 50 || (currentScroll > 0 && currentScroll === lastScroll)) {
+                    // Reset to the beginning
                     row.scrollTo({ left: 0, behavior: 'smooth' });
+                    lastScrolls.set(row, 0); // Reset tracking
                 } else {
-                    // In RTL, moving forward means scrolling to the negative left
-                    row.scrollBy({ left: -250, behavior: 'smooth' });
+                    // Move forward. In RTL, "forward" usually means scrolling to a negative left value.
+                    // To be completely safe across all browsers, we check the computed direction.
+                    const isRtl = window.getComputedStyle(row).direction === 'rtl';
+                    row.scrollBy({ left: isRtl ? -250 : 250, behavior: 'smooth' });
+
+                    lastScrolls.set(row, currentScroll);
                 }
             });
-        }, 2500); // 2.5 seconds
+        }, 3000); // 3 seconds
     }
 };
