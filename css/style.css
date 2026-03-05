@@ -925,6 +925,38 @@ video {
         padding: 15px;
         overflow-y: auto;
     }
+
+    /* Live TV Landscape Refinements */
+    .livetv-layout {
+        flex-direction: row;
+        height: calc(100vh - 60px);
+        margin-top: 60px;
+    }
+
+    .livetv-sidebar-v2 {
+        width: 250px;
+        height: 100%;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: none;
+    }
+
+    .livetv-main-player {
+        flex-grow: 1;
+        padding: 10px;
+        min-height: auto;
+    }
+
+    .inline-player-wrapper {
+        max-width: 80%;
+    }
+
+    .navbar {
+        padding: 5px 15px;
+    }
+
+    .navbar img {
+        width: 40px !important;
+    }
 }
 
 /* Continue mobile portrait rules */
