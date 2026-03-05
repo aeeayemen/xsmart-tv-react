@@ -51,18 +51,20 @@ window.registerView = {
         App.showLoader();
         errorEl.style.display = 'none';
 
-        API.register(user, email, pass)
-            .then(() => {
-                return API.authenticate(user, pass);
-            })
-            .then(res => {
-                App.hideLoader();
-                Router.navigate('#/home');
-            })
-            .catch(err => {
-                App.hideLoader();
-                errorEl.innerText = err.message || 'حدث خطأ أثناء إنشاء الحساب حاول مرة أخرى.';
-                errorEl.style.display = 'block';
-            });
+        // Mock registration process
+        setTimeout(() => {
+            const host = 'http://mock_hardcoded_host';
+            API.init(host, user, pass);
+            API.authenticate()
+                .then(res => {
+                    App.hideLoader();
+                    Router.navigate('#/home');
+                })
+                .catch(err => {
+                    App.hideLoader();
+                    errorEl.innerText = 'حدث خطأ أثناء إنشاء الحساب حاول مرة أخرى.';
+                    errorEl.style.display = 'block';
+                });
+        }, 800);
     }
 };
