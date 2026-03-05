@@ -821,7 +821,11 @@ video {
     }
 
     .user-info {
-        font-size: 0.7rem;
+        display: flex !important;
+        flex-direction: column;
+        font-size: 0.75rem;
+        text-align: left;
+        order: 2;
     }
 
     /* Sidebar becomes horizontal scroll bar on mobile */
@@ -1157,9 +1161,11 @@ video {
     }
 
     .user-info {
-        display: block;
-        font-size: 0.65rem;
+        display: flex !important;
+        flex-direction: column;
+        font-size: 0.7rem;
         line-height: 1.2;
+        order: 2;
     }
 
     /* Live TV Refinements */
