@@ -47,15 +47,18 @@ window.loginView = {
         App.showLoader();
         errorEl.style.display = 'none';
 
-        API.authenticate(user, pass)
-            .then(async res => {
-                await Storage.syncFavoritesWithBackend();
+        // Hardcode the host for now since the user doesn't need to enter it
+        const host = 'http://mock_hardcoded_host';
+
+        API.init(host, user, pass);
+        API.authenticate()
+            .then(res => {
                 App.hideLoader();
                 Router.navigate('#/home');
             })
             .catch(err => {
                 App.hideLoader();
-                errorEl.innerText = err.message || 'فشل تسجيل الدخول. تأكد من صحة البيانات.';
+                errorEl.innerText = 'فشل تسجيل الدخول. تأكد من صحة البيانات أو صلاحية الاشتراك.';
                 errorEl.style.display = 'block';
             });
     }
