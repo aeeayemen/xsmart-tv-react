@@ -89,7 +89,8 @@ window.detailsView = {
                 });
             }
 
-            document.getElementById('fav-btn').addEventListener('click', () => {
+            document.getElementById('fav-btn').addEventListener('click', async () => {
+                const userId = Storage.getCurrentUserId();
                 const item = {
                     stream_id: params.id,
                     series_id: params.id,
@@ -100,10 +101,12 @@ window.detailsView = {
 
                 if (Storage.isFavorite(params.type, params.id)) {
                     Storage.removeFavorite(params.type, params.id);
+                    if (userId) await API.removeFavorite(userId, params.type, params.id);
                     document.getElementById('fav-icon').innerText = '♡';
                     document.getElementById('fav-text').innerText = 'إضافة للمفضلة';
                 } else {
                     Storage.addFavorite(params.type, item);
+                    if (userId) await API.addFavorite(userId, params.type, item);
                     document.getElementById('fav-icon').innerText = '♥';
                     document.getElementById('fav-text').innerText = 'إزالة من المفضلة';
                 }

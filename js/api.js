@@ -1,8 +1,8 @@
 const API = {
-    host: 'mock_host',
-    username: 'mock_user',
-    password: 'mock_password',
-    userInfo: { auth: 1, username: 'Mock User', exp_date: '1735689600' }, // date far in the future
+    backendUrl: window.location.origin + '/backend',
+    host: '',
+    username: '',
+    password: '',
 
     init: function (host, username, password) {
         this.host = host;
@@ -10,22 +10,84 @@ const API = {
         this.password = password;
     },
 
-    buildUrl: function (action = '', additionalParams = '') {
-        return '#';
+    authenticate: async function (username, password) {
+        try {
+            const response = await fetch(`${this.backendUrl}/login.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const result = await response.json();
+            if (result.success) {
+                Storage.set('user_info', result.user_info);
+                return result;
+            } else {
+                throw new Error(result.error || 'فشل تسجيل الدخول');
+            }
+        } catch (error) {
+            console.error('Login Error:', error);
+            throw error;
+        }
     },
 
-    authenticate: async function () {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                Storage.setStr('xtream_credentials', JSON.stringify({
-                    host: this.host || 'mock',
-                    username: this.username || 'mock',
-                    password: this.password || 'mock'
-                }));
-                Storage.set('user_info', this.userInfo);
-                resolve({ user_info: this.userInfo });
-            }, 500); // simulate network delay
-        });
+    register: async function (username, password) {
+        try {
+            const response = await fetch(`${this.backendUrl}/register.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const result = await response.json();
+            if (result.success) {
+                return result;
+            } else {
+                throw new Error(result.error || 'فشل إنشاء الحساب');
+            }
+        } catch (error) {
+            console.error('Registration Error:', error);
+            throw error;
+        }
+    },
+
+    // Favorites Syncing
+    syncFavorites: async function (userId) {
+        try {
+            const response = await fetch(`${this.backendUrl}/favorites.php?action=list&user_id=${userId}`);
+            return await response.json();
+        } catch (error) {
+            console.error('Sync Favorites Error:', error);
+            return [];
+        }
+    },
+
+    addFavorite: async function (userId, type, item) {
+        try {
+            const payload = {
+                type,
+                item_id: item.stream_id || item.series_id,
+                name: item.name,
+                image_url: item.cover || item.stream_icon || item.movie_image || (item.backdrop_path ? item.backdrop_path[0] : '')
+            };
+            await fetch(`${this.backendUrl}/favorites.php?action=add&user_id=${userId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+        } catch (error) {
+            console.error('Add Favorite Error:', error);
+        }
+    },
+
+    removeFavorite: async function (userId, type, itemId) {
+        try {
+            await fetch(`${this.backendUrl}/favorites.php?action=remove&user_id=${userId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type, item_id: itemId })
+            });
+        } catch (error) {
+            console.error('Remove Favorite Error:', error);
+        }
     },
 
     getCategories: async function (type) {

@@ -66,5 +66,37 @@ const Storage = {
 
     getHistory: function (type) {
         return this.get(`history_${type}`) || [];
+    },
+
+    getCurrentUserId: function () {
+        const userInfo = this.get('user_info');
+        return userInfo ? userInfo.id : null;
+    },
+
+    syncFavoritesWithBackend: async function () {
+        const userId = this.getCurrentUserId();
+        if (!userId) return;
+
+        const remoteFavs = await API.syncFavorites(userId);
+        if (Array.isArray(remoteFavs)) {
+            // Group by type and update localStorage
+            const grouped = { movie: [], series: [], live: [] };
+            remoteFavs.forEach(f => {
+                if (grouped[f.type]) {
+                    // Normalize back to frontend format if needed
+                    grouped[f.type].push({
+                        stream_id: f.item_id,
+                        series_id: f.item_id, // For compatibility
+                        name: f.name,
+                        stream_icon: f.image_url,
+                        cover: f.image_url
+                    });
+                }
+            });
+
+            this.set('favorites_movie', grouped.movie);
+            this.set('favorites_series', grouped.series);
+            this.set('favorites_live', grouped.live);
+        }
     }
 };
